@@ -182,20 +182,13 @@
         T("hero.ctaLabel", "Button text"), LINK("hero.ctaHref", "Button link"),
         { k: "hero.tags", t: "list", l: "Service labels", add: "Add label" }
       ] },
-      { g: "Services Preview", f: [
-        T("services.eyebrow", "Script label"), T("services.heading", "Heading"), TA("services.sub", "Intro text", "", 2),
-        T("services.ctaLabel", "Button text"), LINK("services.ctaHref", "Button link"),
-        { k: "services.items", t: "repeat", l: "Service cards", title: "title", add: "Add service card", tpl: { icon: "star", title: "New service", text: "" },
-          f: [ICO("icon"), T("title", "Title"), TA("text", "Short description", "", 2)] }
-      ] },
       { g: "Featured Work", d: "Mark projects as Featured in Portfolio to show them here (up to 6). If none are featured, the cards below are shown.", f: [
         T("work.eyebrow", "Script label"), T("work.heading", "Heading"), TA("work.sub", "Intro text", "", 2),
         T("work.ctaLabel", "Button text"), LINK("work.ctaHref", "Button link"),
         { k: "work.items", t: "repeat", l: "Fallback cards", title: "title", thumb: "thumbnail", add: "Add card", tpl: { title: "New card", category: "", thumbnail: "", link: "" },
           f: [T("title", "Title"), T("category", "Category"), IMG("thumbnail", "Thumbnail"), T("link", "Link (optional)", "Full URL starting with https://")] }
       ] },
-      { g: "Section Headings", d: "Testimonial and brand entries are managed under Testimonials & Brands.", f: [
-        T("testimonials.eyebrow", "Testimonials — script label"), T("testimonials.heading", "Testimonials — heading"),
+      { g: "Section Headings", d: "Brand entries are managed under Brands.", f: [
         T("brands.eyebrow", "Collaborations — script label"), T("brands.heading", "Collaborations — heading")
       ] },
       { g: "Closing Call to Action", f: [
@@ -291,11 +284,7 @@
       ] }
     ] },
 
-    people: { title: "Testimonials & Brands", icon: "people", view: "../index.html#testimonials", groups: [
-      { g: "Client Testimonials", d: "Shown in the sliding cards on the Home page. Remove all to hide the section.", f: [
-        { k: "testimonials.items", t: "repeat", l: "Testimonials", title: "name", sub: "role", thumb: "avatar", add: "Add testimonial", tpl: { quote: "", name: "Client name", role: "", avatar: "" },
-          f: [TA("quote", "Testimonial", "", 4), T("name", "Client name"), T("role", "Role & company", "e.g. Founder · Company"), IMG("avatar", "Client photo / logo (optional)")] }
-      ] },
+    people: { title: "Brands", icon: "people", view: "../index.html#brands", groups: [
       { g: "Brand Collaborations", d: "Shown in the moving row on the Home page. Remove all to hide the section.", f: [
         { k: "brands.items", t: "repeat", l: "Brands", title: "name", thumb: "logo", add: "Add brand", tpl: { name: "Brand name", logo: "", url: "", details: "" },
           f: [T("name", "Brand / project name"), IMG("logo", "Logo (optional)", "Without a logo the name is shown."), T("url", "Website link (optional)", "Full URL starting with https://"), TA("details", "Collaboration details (optional)", "Shown when hovering the brand.", 2)] }
@@ -315,7 +304,7 @@
   };
   var NAV = [
     ["dashboard", "Dashboard", "dash"], ["home", "Home Page", "home"], ["about", "About Page", "user"], ["portfolio", "Portfolio", "folder"],
-    ["services", "Services", "target"], ["contact", "Contact", "mail"], ["people", "Testimonials & Brands", "people"],
+    ["services", "Services", "target"], ["contact", "Contact", "mail"], ["people", "Brands", "people"],
     ["media", "Media Library", "photo"], ["inquiries", "Inquiries", "inbox"], ["settings", "Settings", "gear"]
   ];
 
@@ -900,7 +889,7 @@
     var tiles = [
       ["portfolio", "folder", projects.length, "Portfolio projects", projects.filter(function (p) { return p.featured; }).length + " featured"],
       ["services", "target", services.filter(function (s) { return !s.hidden; }).length, "Visible services", services.filter(function (s) { return s.hidden; }).length + " hidden"],
-      ["people", "people", ((d.testimonials && d.testimonials.items) || []).length, "Testimonials", ((d.brands && d.brands.items) || []).length + " brands"],
+      ["people", "people", ((d.brands && d.brands.items) || []).length, "Brand collaborations", "Shown on Home page"],
       ["inquiries", "inbox", unread, "Unread inquiries", state.inquiries ? state.inquiries.length + " total" : "Loading…"],
       ["about", "chart", stats, "Creator stats filled", "Shown on About page"]
     ];

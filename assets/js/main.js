@@ -197,20 +197,6 @@
       "</div>", "hero-panel");
   }
 
-  function renderServices() {
-    var el = $("#services"); if (!el) return;
-    var s = C.services;
-    var cards = (s.items || []).map(function (it, i) {
-      return '<a class="service-card reveal" style="--i:' + (i % 4) + '" href="' + esc(s.ctaHref) + '">' +
-        '<span class="svc-icon">' + icon(it.icon) + "</span>" +
-        "<h3>" + esc(it.title) + "</h3><p>" + esc(it.text) + "</p>" +
-        '<span class="svc-more">Learn more ' + icon("arrow") + "</span></a>";
-    }).join("");
-    el.innerHTML = panel(sparks(["s2"]) + sectionHead(s, false) +
-      '<div class="services-grid">' + cards + "</div>" +
-      '<div class="section-foot reveal"><a class="btn btn-ghost" href="' + esc(s.ctaHref) + '">' + esc(s.ctaLabel) + icon("arrow") + "</a></div>");
-  }
-
   function renderWork() {
     var el = $("#work"); if (!el) return;
     var w = C.work;
@@ -234,28 +220,6 @@
     el.innerHTML = panel(sparks(["s1"]) + sectionHead(w, false) +
       '<div class="work-grid">' + cards + "</div>" +
       '<div class="section-foot reveal"><a class="btn btn-primary" href="' + esc(w.ctaHref) + '">' + esc(w.ctaLabel) + icon("arrow") + "</a></div>");
-  }
-
-  function renderTestimonials() {
-    var el = $("#testimonials"); if (!el) return;
-    var t = C.testimonials, items = t.items || [];
-    el.hidden = !items.length; if (!items.length) return;
-    var cards = items.map(function (it) {
-      var av = it.avatar ? '<img src="' + esc(it.avatar) + '" alt="">' : "<span>" + initials(it.name) + "</span>";
-      return '<figure class="t-card">' + '<span class="t-quote-icon">' + icon("quote") + "</span>" +
-        (it.video ? '<div class="t-media"><video src="' + esc(it.video) + '"' + (it.poster ? ' poster="' + esc(it.poster) + '"' : "") + ' autoplay muted loop playsinline aria-label="' + esc(it.name) + ' reply GIF">' + (it.poster ? '<img src="' + esc(it.poster) + '" alt="">' : "") + "</video></div>" : "") +
-        (it.quote ? "<blockquote>" + esc(it.quote) + "</blockquote>" : "") +
-        '<span class="t-heart">' + icon("heart") + '</span><figcaption><span class="t-avatar">' + av + "</span><span><strong>" + esc(it.name) + "</strong><small>" + (it.link ? '<a class="t-source" href="' + esc(it.link) + '" target="_blank" rel="noopener">' + esc(it.role) + "</a>" : esc(it.role)) + "</small></span></figcaption></figure>";
-    }).join("");
-    el.innerHTML = panel(sparks(["s3"]) + sectionHead(t, true) +
-      '<div class="slider reveal" aria-roledescription="carousel">' +
-        '<div class="slider-viewport"><div class="slider-track">' + cards + "</div></div>" +
-        '<div class="slider-controls">' +
-          '<button class="slider-btn prev" aria-label="Previous testimonial">' + icon("left") + "</button>" +
-          '<div class="slider-dots"></div>' +
-          '<button class="slider-btn next" aria-label="Next testimonial">' + icon("right") + "</button>" +
-        "</div></div>");
-    initSlider($(".slider", el));
   }
 
   function renderBrands() {
@@ -289,54 +253,6 @@
         '<div class="cta-side reveal d2"><ul class="contact-list">' + contactList() + "</ul>" +
           '<p class="signoff">' + esc(c.signoff) + " " + icon("heart") + "</p></div>" +
       "</div>", "cta-panel");
-  }
-
-  /* ---------- Testimonial slider ---------- */
-  function initSlider(root) {
-    if (!root) return;
-    var track = $(".slider-track", root), cards = $$(".t-card", root), dotsWrap = $(".slider-dots", root);
-    var idx = 0, timer = null;
-    function perView() { return window.innerWidth >= 900 ? 2 : 1; }
-    function maxIdx() { return Math.max(0, cards.length - perView()); }
-    function buildDots() {
-      dotsWrap.innerHTML = "";
-      for (var i = 0; i <= maxIdx(); i++) {
-        var d = document.createElement("button");
-        d.className = "dot"; d.setAttribute("aria-label", "Go to slide " + (i + 1));
-        (function (n) { d.addEventListener("click", function () { go(n); restart(); }); })(i);
-        dotsWrap.appendChild(d);
-      }
-    }
-    function go(n) {
-      var m = maxIdx();
-      idx = n > m ? 0 : n < 0 ? m : n;
-      root.style.setProperty("--per", perView());
-      var step = cards[0] ? cards[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 0;
-      track.style.transform = "translateX(" + -idx * step + "px)";
-      $$(".dot", dotsWrap).forEach(function (d, i) { d.classList.toggle("active", i === idx); });
-    }
-    function restart() {
-      clearInterval(timer);
-      if (!reduceMotion && cards.length > perView()) timer = setInterval(function () { go(idx + 1); }, 5000);
-    }
-    $(".prev", root).addEventListener("click", function () { go(idx - 1); restart(); });
-    $(".next", root).addEventListener("click", function () { go(idx + 1); restart(); });
-    root.addEventListener("mouseenter", function () { clearInterval(timer); });
-    root.addEventListener("mouseleave", restart);
-    // swipe
-    var sx = null;
-    root.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; }, { passive: true });
-    root.addEventListener("touchend", function (e) {
-      if (sx === null) return;
-      var dx = e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 40) { go(idx + (dx < 0 ? 1 : -1)); restart(); }
-      sx = null;
-    });
-    var rt; window.addEventListener("resize", function () {
-      clearTimeout(rt); rt = setTimeout(function () { buildDots(); go(Math.min(idx, maxIdx())); restart(); }, 150);
-    });
-    root.style.setProperty("--per", perView());
-    buildDots(); requestAnimationFrame(function () { go(0); }); restart();
   }
 
   /* ---------- Scroll reveal ---------- */
@@ -420,8 +336,8 @@
     loadContent().then(function (content) {
       C = content; window.SITE_CONTENT = content; window.SHUX.C = content;
       applyTheme(); applySeo();
-      renderHeader(); renderHero(); renderServices(); renderWork();
-      renderTestimonials(); renderBrands(); renderCTA(); renderStub();
+      renderHeader(); renderHero(); renderWork();
+      renderBrands(); renderCTA(); renderStub();
       if (typeof window.SHUX_PAGE === "function") window.SHUX_PAGE();
       renderFooter();
       initReveal();
