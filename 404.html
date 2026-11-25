@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page not found — Shux Broh (ShuxBroh)</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script>
+  /* /admin (no slash) -> /admin/ ; Netlify used a 301 redirect for this */
+  if (/^\/admin$/i.test(location.pathname)) location.replace("/admin/" + location.search + location.hash);
+</script>
+</head>
+<body>
+<main class="section page-top" style="min-height:70vh;display:grid;place-items:center;text-align:center">
+  <div class="container">
+    <h1>Page not found</h1>
+    <p style="margin:14px 0 26px">This page doesn't exist.</p>
+    <a class="btn btn-primary" href="/">Go to the home page</a>
+  </div>
+</main>
+</body>
+</html>
