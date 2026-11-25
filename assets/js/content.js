@@ -132,9 +132,9 @@ window.SITE_CONTENT = {
   contact: {
     eyebrow: "get in touch",
     heading: "Contact",
-    sub: "Placeholder — a short line inviting brands, founders and projects to reach out.",
+    sub: "Building in AI or Web3? Reach out about videos, breakdowns, or a collaboration — I'd love to hear what you're working on.",
     detailsHeading: "Contact Details",
-    availability: "Placeholder — your availability or typical response time.",
+    availability: "I usually reply within 24 hours.",
     emptyLink: "Link coming soon",
     form: {
       enabled: true,
